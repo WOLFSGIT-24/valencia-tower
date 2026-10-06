@@ -176,10 +176,13 @@ export const floorPlansData: FloorPlanUnit[] = [
 
 export const projectSnapshot = {
   landArea: "2.5 Acres",
-  totalUnits: "128 Boutique Residences",
-  configuration: "2 & 3 BHK Premium",
-  possession: "Dec 2026",
-  rera: "PRM/KA/RERA/1251/446/PR/250925/008120",
+  totalUnits: "Boutique Luxury Residences",
+  configuration: "Spacious 4 BHK & 5 BHK",
+  possession: "Dec 2028",
+  rera: "UPRERAPRJ944626/09/2024",
+  promoterRera: "UPRERAPRJ10815",
+  reraWebsite: "www.up-rera.in",
+  launchDate: "28 September 2024",
   developer: "Shalimar Corp",
   locationName: "Shalimar OneWorld, Lucknow, UP, India"
 };

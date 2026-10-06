@@ -229,9 +229,12 @@ export default function BrochureForm({ onAddLead, preselectedUnit }: BrochureFor
                       )}
                     </button>
 
-                    <div className="flex gap-2 justify-center items-center text-[10px] text-gray-400 font-body">
-                      <ShieldCheck className="h-3.5 w-3.5 text-green-400" />
-                      <span>End-to-End SSL secured. Your details remain confidential.</span>
+                    <div className="flex flex-col items-center gap-1 text-[10px] text-gray-400 font-body">
+                      <div className="flex gap-2 justify-center items-center">
+                        <ShieldCheck className="h-3.5 w-3.5 text-green-400" />
+                        <span>End-to-End SSL secured. Your details remain confidential.</span>
+                      </div>
+                      <span className="text-[#d4af37]/80 font-medium">UP RERA Reg No.: UPRERAPRJ944626/09/2024</span>
                     </div>
                   </form>
                 </>

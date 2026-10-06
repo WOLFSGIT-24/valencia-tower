@@ -89,13 +89,44 @@ export default function Footer({ onOpenPrivacy, onOpenTerms }: FooterProps = {})
 
         {/* Legal & Compliance bottom section */}
         <div className="space-y-6 text-xs text-white/60 leading-relaxed text-left">
+          {/* RERA Information Card */}
+          <div className="p-4 rounded-md bg-white/[0.03] border border-[#d4af37]/30 max-w-4xl space-y-2">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-body">
+              <div>
+                <span className="text-[#d4af37] font-semibold">Project RERA No.: </span>
+                <span className="text-white font-medium">UPRERAPRJ944626/09/2024</span>
+              </div>
+              <div className="hidden sm:block text-white/30">•</div>
+              <div>
+                <span className="text-[#d4af37] font-semibold">Promoter RERA No.: </span>
+                <span className="text-white font-medium">UPRERAPRJ10815</span>
+              </div>
+              <div className="hidden sm:block text-white/30">•</div>
+              <div>
+                <span className="text-[#d4af37] font-semibold">Launch Date: </span>
+                <span className="text-white font-medium">28 September 2024</span>
+              </div>
+            </div>
+            <div className="text-[11px] text-white/60">
+              <span>Official RERA Website: </span>
+              <a
+                href="https://www.up-rera.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#d4af37] underline hover:text-white transition-colors ml-1 font-medium"
+              >
+                www.up-rera.in
+              </a>
+            </div>
+          </div>
+
           <p className="max-w-4xl text-[10px] text-white/50">
             *Prices starting from ₹2.8 Cr onwards. Govt taxes & registration additional. Visuals, renders, and floor plan dimensions are artistic impressions and subject to change by the developer. All rights reserved.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t border-white/5 text-[11px]">
             <div>
-              <p>© {new Date().getFullYear()} Valencia Towers Phase 2, Shalimar OneWorld, Lucknow. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} Shalimar OneWorld Valencia Towers Phase 2, Lucknow. All rights reserved.</p>
             </div>
             <div className="flex items-center gap-4">
               <button 

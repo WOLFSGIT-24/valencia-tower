@@ -91,8 +91,11 @@ export default function TermsModal({ isOpen, onClose }: TermsModalProps) {
           <div className="space-y-4">
             <h3 className="font-display text-lg font-bold text-navy-primary">6. RERA Compliance</h3>
             <p>The project is registered under the Real Estate (Regulation and Development) Act, 2016 (RERA) applicable for projects in Uttar Pradesh.</p>
-            <p><strong>UP RERA Registration No:</strong> UPRERAPRJ123456</p>
-            <p>Details are available on the official website: up-rera.in</p>
+            <p><strong>Project Name:</strong> Shalimar Oneworld Valencia Towers Phase 2</p>
+            <p><strong>Project RERA Registration No:</strong> UPRERAPRJ944626/09/2024</p>
+            <p><strong>Promoter RERA Registration No:</strong> UPRERAPRJ10815</p>
+            <p><strong>Launch Date:</strong> 28 September 2024</p>
+            <p>Details are available on the official website: <a href="https://www.up-rera.in" target="_blank" rel="noopener noreferrer" className="text-navy-primary underline">www.up-rera.in</a></p>
           </div>
 
           <div className="space-y-4">
