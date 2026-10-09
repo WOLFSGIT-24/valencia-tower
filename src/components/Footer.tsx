@@ -50,6 +50,7 @@ export default function Footer({ onOpenPrivacy, onOpenTerms }: FooterProps = {})
                 { label: "Privacy & Exclusivity", id: "privacy-exclusivity" },
                 { label: "Shalimar OneWorld", id: "oneworld-advantage" },
                 { label: "Location Advantage", id: "location-advantage" },
+                { label: "Luxury Landmark", id: "landmark-luxury" },
                 { label: "Project Highlights", id: "project-highlights" },
                 { label: "Site Visit", id: "site-visit" },
               ].map((link) => (

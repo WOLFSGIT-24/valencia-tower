@@ -6,6 +6,7 @@ import WhyValencia from "./components/WhyValencia";
 import PrivacyExclusivity from "./components/PrivacyExclusivity";
 import ShalimarOneWorld from "./components/ShalimarOneWorld";
 import LocationAdvantage from "./components/LocationAdvantage";
+import LandmarkLuxury from "./components/LandmarkLuxury";
 import ProjectHighlights from "./components/ProjectHighlights";
 import SiteVisitCTA from "./components/SiteVisitCTA";
 import BrochureForm from "./components/BrochureForm";
@@ -143,6 +144,9 @@ export default function App() {
 
       {/* Section 5 — Location Advantage */}
       <LocationAdvantage onOpenEnquiry={handleHeroEnquiry} />
+
+      {/* Section 5.5 — A Landmark of Luxury Living in Lucknow */}
+      <LandmarkLuxury onOpenEnquiry={handleHeroEnquiry} />
 
       {/* Section 6 — Project Highlights */}
       <ProjectHighlights onOpenEnquiry={handleHeroEnquiry} />

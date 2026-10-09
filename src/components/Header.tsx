@@ -18,6 +18,7 @@ export default function Header({ onOpenBooking, onToggleAdmin, isAdminActive }: 
     { label: "PRIVACY", id: "privacy-exclusivity" },
     { label: "ONEWORLD ADVANTAGE", id: "oneworld-advantage" },
     { label: "LOCATION", id: "location-advantage" },
+    { label: "LUXURY LANDMARK", id: "landmark-luxury" },
     { label: "HIGHLIGHTS", id: "project-highlights" },
   ];
 
