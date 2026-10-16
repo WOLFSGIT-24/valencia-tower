@@ -3,10 +3,13 @@ export interface LeadSubmission {
   fullName: string;
   email: string;
   phone: string;
-  submittedAt: string;
-  source: "brochure_form" | "modal_enquiry" | "site_visit_form";
+  budget?: string;
+  siteVisitDate?: string;
   preferredDate?: string;
   preferredTime?: string;
+  planningToFinalise?: string;
+  submittedAt: string;
+  source: string;
   status: "Pending" | "Contacted" | "Scheduled" | "Completed";
   notes?: string;
 }

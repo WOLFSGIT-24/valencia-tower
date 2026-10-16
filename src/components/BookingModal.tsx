@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Calendar, Check, Phone, Mail, User } from "lucide-react";
+import { X, Calendar, Check, Phone, Mail, User, IndianRupee, Clock } from "lucide-react";
 import { LeadSubmission } from "../types";
 
 interface BookingModalProps {
@@ -21,9 +21,12 @@ export default function BookingModal({
     fullName: "",
     email: "",
     phone: "",
+    budget: "",
+    siteVisitDate: "",
+    planningToFinalise: "",
     preferredDate: "",
     preferredTime: "11:00",
-    unitType: initialUnitType || "Luxury 3 BHK",
+    unitType: initialUnitType || "Luxury 4 BHK",
     notes: "",
   });
 
@@ -32,20 +35,21 @@ export default function BookingModal({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { id, value } = e.target;
+    const { id, name, value } = e.target;
+    const fieldKey = id || name;
     
     let sanitizedValue = value;
-    if (id === "phone") {
+    if (fieldKey === "phone") {
       // Allow only digits, max 10 digits
       sanitizedValue = value.replace(/\D/g, '').slice(0, 10);
-    } else if (id === "fullName") {
+    } else if (fieldKey === "fullName") {
       // Allow only letters and spaces
       sanitizedValue = value.replace(/[^A-Za-z\s]/g, '');
     }
     
-    setFormData((prev) => ({ ...prev, [id]: sanitizedValue }));
-    if (errors[id]) {
-      setErrors((prev) => ({ ...prev, [id]: "" }));
+    setFormData((prev) => ({ ...prev, [fieldKey]: sanitizedValue }));
+    if (errors[fieldKey]) {
+      setErrors((prev) => ({ ...prev, [fieldKey]: "" }));
     }
   };
 
@@ -63,6 +67,15 @@ export default function BookingModal({
     if (!/^\d{10}$/.test(formData.phone.trim())) {
       newErrors.phone = "Please enter a valid 10-digit phone number";
     }
+    if (!formData.budget) {
+      newErrors.budget = "Please select your budget";
+    }
+    if (!formData.siteVisitDate) {
+      newErrors.siteVisitDate = "Please select preferred site visit date";
+    }
+    if (!formData.planningToFinalise) {
+      newErrors.planningToFinalise = "Please select when you plan to finalise";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -77,8 +90,12 @@ export default function BookingModal({
         fullName: formData.fullName,
         email: formData.email,
         phone: formData.phone,
+        budget: formData.budget,
+        siteVisitDate: formData.siteVisitDate,
+        preferredDate: formData.siteVisitDate,
+        planningToFinalise: formData.planningToFinalise,
         source: "floor_plan_enquiry",
-        notes: "Unlocked Floor Plans",
+        notes: `Unlocked Floor Plans | Budget: ${formData.budget} | Site Visit: ${formData.siteVisitDate} | Finalise: ${formData.planningToFinalise}`,
       });
       setLoading(false);
       setSubmitted(true);
@@ -155,7 +172,7 @@ export default function BookingModal({
               {/* Phone Number */}
               <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
                 <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-[#d4af37]" />
+                  <Phone className="h-4 w-4 text-[#d4af37] shrink-0" />
                   <input
                     type="tel"
                     id="phone"
@@ -168,6 +185,73 @@ export default function BookingModal({
                   />
                 </div>
                 {errors.phone && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.phone}</p>}
+              </div>
+
+              {/* Budget */}
+              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
+                <div className="flex items-center gap-3">
+                  <IndianRupee className="h-4 w-4 text-[#d4af37] shrink-0" />
+                  <select
+                    id="budget"
+                    name="budget"
+                    required
+                    value={formData.budget}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white py-1 cursor-pointer"
+                  >
+                    <option value="" disabled className="bg-[#141414] text-gray-500">Select Budget*</option>
+                    <option value="₹2.8 Cr" className="bg-[#141414] text-white">₹2.8 Cr</option>
+                    <option value="₹3.5 Cr" className="bg-[#141414] text-white">₹3.5 Cr</option>
+                    <option value="₹5.5 Cr" className="bg-[#141414] text-white">₹5.5 Cr</option>
+                    <option value="₹5.5 Cr+" className="bg-[#141414] text-white">Above ₹5.5 Cr</option>
+                  </select>
+                </div>
+                {errors.budget && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.budget}</p>}
+              </div>
+
+              {/* Site Visit Date */}
+              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
+                <div className="flex items-center gap-3">
+                  <Calendar className="h-4 w-4 text-[#d4af37] shrink-0" />
+                  <input
+                    type={formData.siteVisitDate ? "date" : "text"}
+                    onFocus={(e) => (e.target.type = "date")}
+                    onBlur={(e) => {
+                      if (!e.target.value) e.target.type = "text";
+                    }}
+                    id="siteVisitDate"
+                    name="siteVisitDate"
+                    required
+                    min={new Date().toISOString().split("T")[0]}
+                    value={formData.siteVisitDate}
+                    onChange={handleChange}
+                    placeholder="Site Visit Date*"
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-1 cursor-pointer [color-scheme:dark]"
+                  />
+                </div>
+                {errors.siteVisitDate && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.siteVisitDate}</p>}
+              </div>
+
+              {/* When are you planning to finalise */}
+              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
+                <div className="flex items-center gap-3">
+                  <Clock className="h-4 w-4 text-[#d4af37] shrink-0" />
+                  <select
+                    id="planningToFinalise"
+                    name="planningToFinalise"
+                    required
+                    value={formData.planningToFinalise}
+                    onChange={handleChange}
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white py-1 cursor-pointer"
+                  >
+                    <option value="" disabled className="bg-[#141414] text-gray-500">When are you planning to finalise?*</option>
+                    <option value="Immediately (Within 15 days)" className="bg-[#141414] text-white">Immediately (Within 15 days)</option>
+                    <option value="Within 30 days" className="bg-[#141414] text-white">Within 30 days</option>
+                    <option value="1 - 3 months" className="bg-[#141414] text-white">1 - 3 months</option>
+                    <option value="More than 3 months" className="bg-[#141414] text-white">More than 3 months</option>
+                  </select>
+                </div>
+                {errors.planningToFinalise && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.planningToFinalise}</p>}
               </div>
 
               <button

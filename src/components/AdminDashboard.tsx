@@ -184,16 +184,26 @@ export default function AdminDashboard({
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-1 pl-10 font-body text-xs text-gray-text">
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 pl-10 font-body text-xs text-gray-text">
                       <div>📧 {lead.email}</div>
                       <div>📞 {lead.phone}</div>
-                      {lead.preferredDate && (
-                        <div className="col-span-2 text-indigo-600 font-semibold mt-1">
-                          🗓️ Site Walkthrough Requested: {lead.preferredDate} at {lead.preferredTime || "11:00 AM"}
+                      {lead.budget && (
+                        <div className="text-emerald-700 font-semibold">
+                          💰 Budget: {lead.budget}
+                        </div>
+                      )}
+                      {(lead.siteVisitDate || lead.preferredDate) && (
+                        <div className="text-indigo-600 font-semibold">
+                          🗓️ Site Visit: {lead.siteVisitDate || lead.preferredDate}
+                        </div>
+                      )}
+                      {lead.planningToFinalise && (
+                        <div className="col-span-2 text-violet-700 font-semibold">
+                          ⏳ Plan to Finalise: {lead.planningToFinalise}
                         </div>
                       )}
                       {lead.notes && (
-                        <div className="col-span-2 text-amber-700 italic bg-amber-50 px-2 py-1 rounded text-[11px] mt-1.5 border border-amber-100 max-w-lg">
+                        <div className="col-span-2 text-amber-700 italic bg-amber-50 px-2 py-1 rounded text-[11px] mt-1 border border-amber-100 max-w-lg">
                           {lead.notes}
                         </div>
                       )}
