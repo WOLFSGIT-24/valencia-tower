@@ -60,19 +60,19 @@ export default function BrochureForm({ onAddLead, preselectedUnit }: BrochureFor
     const newErrors: Record<string, string> = {};
     const trimmedName = formData.fullName.trim();
     if (!trimmedName || !/^[A-Za-z\s]{2,}$/.test(trimmedName)) {
-      newErrors.fullName = "Please enter a valid name (letters only)";
+      newErrors.fullName = "Please enter your full name (letters only)";
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = "Please enter a valid email address";
     }
-    if (!/^\d{10}$/.test(formData.phone.trim())) {
+    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone.trim())) {
       newErrors.phone = "Please enter a valid 10-digit phone number";
     }
     if (!formData.budget) {
       newErrors.budget = "Please select your budget";
     }
     if (!formData.siteVisitDate) {
-      newErrors.siteVisitDate = "Please select preferred site visit date";
+      newErrors.siteVisitDate = "Please select your preferred site visit date";
     }
     if (!formData.planningToFinalise) {
       newErrors.planningToFinalise = "Please select when you plan to finalise";
@@ -177,124 +177,183 @@ export default function BrochureForm({ onAddLead, preselectedUnit }: BrochureFor
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-6 text-left">
+                  <form onSubmit={handleSubmit} className="space-y-5 text-left" noValidate>
                     {/* Full Name */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <User className="h-4 w-4 text-[#d4af37]" />
-                        <input
-                          type="text"
-                          id="fullName"
-                          required
-                          value={formData.fullName}
-                          onChange={handleChange}
-                          placeholder="Full Name*"
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
-                        />
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.fullName ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <User className={`h-4 w-4 shrink-0 ${errors.fullName ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            required
+                            value={formData.fullName}
+                            onChange={handleChange}
+                            placeholder="Full Name*"
+                            className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
+                          />
+                        </div>
                       </div>
-                      {errors.fullName && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.fullName}</p>}
+                      {errors.fullName && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.fullName}
+                        </p>
+                      )}
                     </div>
 
                     {/* Email Address */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <Mail className="h-4 w-4 text-[#d4af37]" />
-                        <input
-                          type="email"
-                          id="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="Email Address*"
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
-                        />
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.email ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <Mail className={`h-4 w-4 shrink-0 ${errors.email ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Email Address*"
+                            className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
+                          />
+                        </div>
                       </div>
-                      {errors.email && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.email}</p>}
+                      {errors.email && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.email}
+                        </p>
+                      )}
                     </div>
 
                     {/* Phone Number */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <Phone className="h-4 w-4 text-[#d4af37] shrink-0" />
-                        <input
-                          type="tel"
-                          id="phone"
-                          required
-                          value={formData.phone}
-                          onChange={handleChange}
-                          placeholder="Phone Number (10 digits)*"
-                          maxLength={10}
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
-                        />
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.phone ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <Phone className={`h-4 w-4 shrink-0 ${errors.phone ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            required
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="Phone Number (10 digits)*"
+                            maxLength={10}
+                            className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1"
+                          />
+                        </div>
                       </div>
-                      {errors.phone && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.phone}</p>}
+                      {errors.phone && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.phone}
+                        </p>
+                      )}
                     </div>
 
                     {/* Budget */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <IndianRupee className="h-4 w-4 text-[#d4af37] shrink-0" />
-                        <select
-                          id="budget"
-                          name="budget"
-                          required
-                          value={formData.budget}
-                          onChange={handleChange}
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] py-1 cursor-pointer"
-                        >
-                          <option value="" disabled className="bg-[#141414] text-gray-400">Select Budget*</option>
-                          <option value="₹2.8 Cr" className="bg-[#141414] text-white">₹2.8 Cr</option>
-                          <option value="₹3.5 Cr" className="bg-[#141414] text-white">₹3.5 Cr</option>
-                          <option value="₹5.5 Cr" className="bg-[#141414] text-white">₹5.5 Cr</option>
-                          <option value="₹5.5 Cr+" className="bg-[#141414] text-white">Above ₹5.5 Cr</option>
-                        </select>
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.budget ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <IndianRupee className={`h-4 w-4 shrink-0 ${errors.budget ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <select
+                            id="budget"
+                            name="budget"
+                            required
+                            value={formData.budget}
+                            onChange={handleChange}
+                            className={`w-full bg-transparent border-none text-sm font-body outline-none py-1 cursor-pointer ${
+                              formData.budget ? "text-[#f5f5f5]" : "text-gray-400"
+                            }`}
+                          >
+                            <option value="" disabled className="bg-[#141414] text-gray-400">Select Budget*</option>
+                            <option value="₹2.8 Cr" className="bg-[#141414] text-white">₹2.8 Cr</option>
+                            <option value="₹3.5 Cr" className="bg-[#141414] text-white">₹3.5 Cr</option>
+                            <option value="₹5.5 Cr" className="bg-[#141414] text-white">₹5.5 Cr</option>
+                            <option value="₹5.5 Cr+" className="bg-[#141414] text-white">Above ₹5.5 Cr</option>
+                          </select>
+                        </div>
                       </div>
-                      {errors.budget && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.budget}</p>}
+                      {errors.budget && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.budget}
+                        </p>
+                      )}
                     </div>
 
                     {/* Site Visit Date */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <Calendar className="h-4 w-4 text-[#d4af37] shrink-0" />
-                        <input
-                          type={formData.siteVisitDate ? "date" : "text"}
-                          onFocus={(e) => (e.target.type = "date")}
-                          onBlur={(e) => {
-                            if (!e.target.value) e.target.type = "text";
-                          }}
-                          id="siteVisitDate"
-                          name="siteVisitDate"
-                          required
-                          min={new Date().toISOString().split("T")[0]}
-                          value={formData.siteVisitDate}
-                          onChange={handleChange}
-                          placeholder="Site Visit Date*"
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] placeholder:text-gray-400 py-1 cursor-pointer [color-scheme:dark]"
-                        />
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.siteVisitDate ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <Calendar className={`h-4 w-4 shrink-0 ${errors.siteVisitDate ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <div className="relative flex-1">
+                            {!formData.siteVisitDate && (
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-body pointer-events-none">
+                                Site Visit Date*
+                              </span>
+                            )}
+                            <input
+                              type="date"
+                              id="siteVisitDate"
+                              name="siteVisitDate"
+                              required
+                              min={new Date().toISOString().split("T")[0]}
+                              value={formData.siteVisitDate}
+                              onChange={handleChange}
+                              className={`w-full bg-transparent border-none text-sm font-body outline-none py-1 cursor-pointer [color-scheme:dark] ${
+                                formData.siteVisitDate ? "text-[#f5f5f5]" : "text-transparent"
+                              }`}
+                            />
+                          </div>
+                        </div>
                       </div>
-                      {errors.siteVisitDate && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.siteVisitDate}</p>}
+                      {errors.siteVisitDate && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.siteVisitDate}
+                        </p>
+                      )}
                     </div>
 
                     {/* When are you planning to finalise */}
-                    <div className="relative border-b border-white/20 focus-within:border-[#d4af37] transition-colors py-2">
-                      <div className="flex items-center gap-3">
-                        <Clock className="h-4 w-4 text-[#d4af37] shrink-0" />
-                        <select
-                          id="planningToFinalise"
-                          name="planningToFinalise"
-                          required
-                          value={formData.planningToFinalise}
-                          onChange={handleChange}
-                          className="w-full bg-transparent border-none text-sm font-body outline-none text-[#f5f5f5] py-1 cursor-pointer"
-                        >
-                          <option value="" disabled className="bg-[#141414] text-gray-400">When are you planning to finalise?*</option>
-                          <option value="Immediately (Within 15 days)" className="bg-[#141414] text-white">Immediately (Within 15 days)</option>
-                          <option value="Within 30 days" className="bg-[#141414] text-white">Within 30 days</option>
-                          <option value="1 - 3 months" className="bg-[#141414] text-white">1 - 3 months</option>
-                          <option value="More than 3 months" className="bg-[#141414] text-white">More than 3 months</option>
-                        </select>
+                    <div>
+                      <div className={`relative border-b transition-colors py-2 ${
+                        errors.planningToFinalise ? "border-red-500 bg-red-500/5 px-2 rounded-t" : "border-white/20 focus-within:border-[#d4af37]"
+                      }`}>
+                        <div className="flex items-center gap-3">
+                          <Clock className={`h-4 w-4 shrink-0 ${errors.planningToFinalise ? "text-red-400" : "text-[#d4af37]"}`} />
+                          <select
+                            id="planningToFinalise"
+                            name="planningToFinalise"
+                            required
+                            value={formData.planningToFinalise}
+                            onChange={handleChange}
+                            className={`w-full bg-transparent border-none text-sm font-body outline-none py-1 cursor-pointer ${
+                              formData.planningToFinalise ? "text-[#f5f5f5]" : "text-gray-400"
+                            }`}
+                          >
+                            <option value="" disabled className="bg-[#141414] text-gray-400">When are you planning to finalise?*</option>
+                            <option value="Immediately (Within 15 days)" className="bg-[#141414] text-white">Immediately (Within 15 days)</option>
+                            <option value="Within 30 days" className="bg-[#141414] text-white">Within 30 days</option>
+                            <option value="1 - 3 months" className="bg-[#141414] text-white">1 - 3 months</option>
+                            <option value="More than 3 months" className="bg-[#141414] text-white">More than 3 months</option>
+                          </select>
+                        </div>
                       </div>
-                      {errors.planningToFinalise && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.planningToFinalise}</p>}
+                      {errors.planningToFinalise && (
+                        <p className="text-red-400 text-xs mt-1.5 font-medium flex items-center gap-1">
+                          <span>⚠️</span> {errors.planningToFinalise}
+                        </p>
+                      )}
                     </div>
 
                     <button

@@ -133,12 +133,14 @@ export default function BookingModal({
         {/* Content/Form Area */}
         <div className="p-6 sm:p-8">
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               
               {/* Full Name */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <User className="h-4 w-4 text-[#d4af37]" />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.fullName ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <User className={`h-4 w-4 shrink-0 ${errors.fullName ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="text"
                     id="fullName"
@@ -146,16 +148,22 @@ export default function BookingModal({
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Full Name*"
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-1"
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-0.5"
                   />
                 </div>
-                {errors.fullName && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.fullName}</p>}
+                {errors.fullName && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.fullName}
+                  </p>
+                )}
               </div>
 
               {/* Email Address */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <Mail className="h-4 w-4 text-[#d4af37]" />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.email ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Mail className={`h-4 w-4 shrink-0 ${errors.email ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="email"
                     id="email"
@@ -163,16 +171,22 @@ export default function BookingModal({
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email Address*"
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-1"
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-0.5"
                   />
                 </div>
-                {errors.email && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.email}
+                  </p>
+                )}
               </div>
 
               {/* Phone Number */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-[#d4af37] shrink-0" />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.phone ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Phone className={`h-4 w-4 shrink-0 ${errors.phone ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="tel"
                     id="phone"
@@ -181,23 +195,31 @@ export default function BookingModal({
                     onChange={handleChange}
                     placeholder="Phone Number (10 digits)*"
                     maxLength={10}
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-1"
+                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-0.5"
                   />
                 </div>
-                {errors.phone && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.phone}</p>}
+                {errors.phone && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.phone}
+                  </p>
+                )}
               </div>
 
               {/* Budget */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <IndianRupee className="h-4 w-4 text-[#d4af37] shrink-0" />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.budget ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <IndianRupee className={`h-4 w-4 shrink-0 ${errors.budget ? "text-red-400" : "text-[#d4af37]"}`} />
                   <select
                     id="budget"
                     name="budget"
                     required
                     value={formData.budget}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white py-1 cursor-pointer"
+                    className={`w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none py-0.5 cursor-pointer ${
+                      formData.budget ? "text-white" : "text-gray-400"
+                    }`}
                   >
                     <option value="" disabled className="bg-[#141414] text-gray-500">Select Budget*</option>
                     <option value="₹2.8 Cr" className="bg-[#141414] text-white">₹2.8 Cr</option>
@@ -206,43 +228,61 @@ export default function BookingModal({
                     <option value="₹5.5 Cr+" className="bg-[#141414] text-white">Above ₹5.5 Cr</option>
                   </select>
                 </div>
-                {errors.budget && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.budget}</p>}
+                {errors.budget && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.budget}
+                  </p>
+                )}
               </div>
 
               {/* Site Visit Date */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-4 w-4 text-[#d4af37] shrink-0" />
-                  <input
-                    type={formData.siteVisitDate ? "date" : "text"}
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => {
-                      if (!e.target.value) e.target.type = "text";
-                    }}
-                    id="siteVisitDate"
-                    name="siteVisitDate"
-                    required
-                    min={new Date().toISOString().split("T")[0]}
-                    value={formData.siteVisitDate}
-                    onChange={handleChange}
-                    placeholder="Site Visit Date*"
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white placeholder:text-gray-500 py-1 cursor-pointer [color-scheme:dark]"
-                  />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.siteVisitDate ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Calendar className={`h-4 w-4 shrink-0 ${errors.siteVisitDate ? "text-red-400" : "text-[#d4af37]"}`} />
+                  <div className="relative flex-1">
+                    {!formData.siteVisitDate && (
+                      <span className="absolute left-0 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-gray-500 font-body pointer-events-none">
+                        Site Visit Date*
+                      </span>
+                    )}
+                    <input
+                      type="date"
+                      id="siteVisitDate"
+                      name="siteVisitDate"
+                      required
+                      min={new Date().toISOString().split("T")[0]}
+                      value={formData.siteVisitDate}
+                      onChange={handleChange}
+                      className={`w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none py-0.5 cursor-pointer [color-scheme:dark] ${
+                        formData.siteVisitDate ? "text-white" : "text-transparent"
+                      }`}
+                    />
+                  </div>
                 </div>
-                {errors.siteVisitDate && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.siteVisitDate}</p>}
+                {errors.siteVisitDate && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.siteVisitDate}
+                  </p>
+                )}
               </div>
 
               {/* When are you planning to finalise */}
-              <div className="relative border-b border-white/20 focus-within:border-[#d4af37] py-1">
-                <div className="flex items-center gap-3">
-                  <Clock className="h-4 w-4 text-[#d4af37] shrink-0" />
+              <div className="relative">
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3.5 py-2.5 transition-colors ${
+                  errors.planningToFinalise ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Clock className={`h-4 w-4 shrink-0 ${errors.planningToFinalise ? "text-red-400" : "text-[#d4af37]"}`} />
                   <select
                     id="planningToFinalise"
                     name="planningToFinalise"
                     required
                     value={formData.planningToFinalise}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none text-white py-1 cursor-pointer"
+                    className={`w-full bg-transparent border-none text-xs sm:text-sm font-body outline-none py-0.5 cursor-pointer ${
+                      formData.planningToFinalise ? "text-white" : "text-gray-400"
+                    }`}
                   >
                     <option value="" disabled className="bg-[#141414] text-gray-500">When are you planning to finalise?*</option>
                     <option value="Immediately (Within 15 days)" className="bg-[#141414] text-white">Immediately (Within 15 days)</option>
@@ -251,13 +291,17 @@ export default function BookingModal({
                     <option value="More than 3 months" className="bg-[#141414] text-white">More than 3 months</option>
                   </select>
                 </div>
-                {errors.planningToFinalise && <p className="text-red-400 text-[10px] mt-1 absolute -bottom-4">{errors.planningToFinalise}</p>}
+                {errors.planningToFinalise && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.planningToFinalise}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#b8860b] via-[#d4af37] to-[#e6c878] text-[#050505] font-body text-xs font-bold tracking-widest uppercase px-8 py-4.5 hover:opacity-95 transition-all shadow-lg rounded-sm disabled:opacity-50 cursor-pointer mt-4"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#b8860b] via-[#d4af37] to-[#e6c878] text-[#050505] font-body text-xs font-bold tracking-widest uppercase px-8 py-4 hover:opacity-95 transition-all shadow-lg rounded-sm disabled:opacity-50 cursor-pointer mt-4"
               >
                 {loading ? (
                   <>

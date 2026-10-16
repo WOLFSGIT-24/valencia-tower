@@ -71,19 +71,19 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
     const newErrors: Record<string, string> = {};
     const trimmedName = formData.fullName.trim();
     if (!trimmedName || !/^[A-Za-z\s]{2,}$/.test(trimmedName)) {
-      newErrors.fullName = "Please enter a valid name (letters only)";
+      newErrors.fullName = "Please enter your full name (letters only)";
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
       newErrors.email = "Please enter a valid email address";
     }
-    if (!/^\d{10}$/.test(formData.phone.trim())) {
+    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone.trim())) {
       newErrors.phone = "Please enter a valid 10-digit phone number";
     }
     if (!formData.budget) {
       newErrors.budget = "Please select your budget";
     }
     if (!formData.siteVisitDate) {
-      newErrors.siteVisitDate = "Please select preferred site visit date";
+      newErrors.siteVisitDate = "Please select your preferred site visit date";
     }
     if (!formData.planningToFinalise) {
       newErrors.planningToFinalise = "Please select when you plan to finalise";
@@ -139,7 +139,7 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
         </button>
 
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          <form onSubmit={handleSubmit} className="flex flex-col h-full" noValidate>
             <div className="p-6 sm:p-7 pb-4 border-b border-white/10">
               <h3 className="font-display text-[16px] font-bold text-[#d4af37] uppercase tracking-wide">
                 Schedule Your Exclusive Site Visit
@@ -152,8 +152,10 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
             <div className="p-6 sm:p-7 pt-5 space-y-3.5">
               {/* Full Name */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <User className="h-4 w-4 text-[#d4af37] shrink-0" />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.fullName ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <User className={`h-4 w-4 shrink-0 ${errors.fullName ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="text"
                     id="fullName"
@@ -165,13 +167,19 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
                     className="w-full bg-transparent border-none text-sm outline-none font-body text-white placeholder:text-gray-500"
                   />
                 </div>
-                {errors.fullName && <p className="text-red-400 text-[10px] mt-1">{errors.fullName}</p>}
+                {errors.fullName && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.fullName}
+                  </p>
+                )}
               </div>
 
               {/* Email Address */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <Mail className="h-4 w-4 text-[#d4af37] shrink-0" />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.email ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Mail className={`h-4 w-4 shrink-0 ${errors.email ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="email"
                     id="email"
@@ -183,13 +191,19 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
                     className="w-full bg-transparent border-none text-sm outline-none font-body text-white placeholder:text-gray-500"
                   />
                 </div>
-                {errors.email && <p className="text-red-400 text-[10px] mt-1">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.email}
+                  </p>
+                )}
               </div>
 
               {/* Phone Number */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <Phone className="h-4 w-4 text-[#d4af37] shrink-0" />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.phone ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Phone className={`h-4 w-4 shrink-0 ${errors.phone ? "text-red-400" : "text-[#d4af37]"}`} />
                   <input
                     type="tel"
                     id="phone"
@@ -202,20 +216,28 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
                     className="w-full bg-transparent border-none text-sm outline-none font-body text-white placeholder:text-gray-500"
                   />
                 </div>
-                {errors.phone && <p className="text-red-400 text-[10px] mt-1">{errors.phone}</p>}
+                {errors.phone && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.phone}
+                  </p>
+                )}
               </div>
 
               {/* Budget Qualifying Field */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <IndianRupee className="h-4 w-4 text-[#d4af37] shrink-0" />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.budget ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <IndianRupee className={`h-4 w-4 shrink-0 ${errors.budget ? "text-red-400" : "text-[#d4af37]"}`} />
                   <select
                     id="budget"
                     name="budget"
                     required
                     value={formData.budget}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-none text-sm outline-none font-body text-white cursor-pointer"
+                    className={`w-full bg-transparent border-none text-sm outline-none font-body cursor-pointer ${
+                      formData.budget ? "text-white" : "text-gray-400"
+                    }`}
                   >
                     <option value="" disabled className="bg-[#141414] text-gray-500">Select Budget*</option>
                     <option value="₹2.8 Cr" className="bg-[#141414] text-white">₹2.8 Cr</option>
@@ -224,43 +246,61 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
                     <option value="₹5.5 Cr+" className="bg-[#141414] text-white">Above ₹5.5 Cr</option>
                   </select>
                 </div>
-                {errors.budget && <p className="text-red-400 text-[10px] mt-1">{errors.budget}</p>}
+                {errors.budget && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.budget}
+                  </p>
+                )}
               </div>
 
               {/* Site Visit Dates Field */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <Calendar className="h-4 w-4 text-[#d4af37] shrink-0" />
-                  <input
-                    type={formData.siteVisitDate ? "date" : "text"}
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => {
-                      if (!e.target.value) e.target.type = "text";
-                    }}
-                    id="siteVisitDate"
-                    name="siteVisitDate"
-                    required
-                    min={new Date().toISOString().split("T")[0]}
-                    value={formData.siteVisitDate}
-                    onChange={handleChange}
-                    placeholder="Site Visit Date*"
-                    className="w-full bg-transparent border-none text-sm outline-none font-body text-white placeholder:text-gray-500 cursor-pointer [color-scheme:dark]"
-                  />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.siteVisitDate ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Calendar className={`h-4 w-4 shrink-0 ${errors.siteVisitDate ? "text-red-400" : "text-[#d4af37]"}`} />
+                  <div className="relative flex-1">
+                    {!formData.siteVisitDate && (
+                      <span className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-body pointer-events-none">
+                        Site Visit Date*
+                      </span>
+                    )}
+                    <input
+                      type="date"
+                      id="siteVisitDate"
+                      name="siteVisitDate"
+                      required
+                      min={new Date().toISOString().split("T")[0]}
+                      value={formData.siteVisitDate}
+                      onChange={handleChange}
+                      className={`w-full bg-transparent border-none text-sm outline-none font-body cursor-pointer [color-scheme:dark] ${
+                        formData.siteVisitDate ? "text-white" : "text-transparent"
+                      }`}
+                    />
+                  </div>
                 </div>
-                {errors.siteVisitDate && <p className="text-red-400 text-[10px] mt-1">{errors.siteVisitDate}</p>}
+                {errors.siteVisitDate && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.siteVisitDate}
+                  </p>
+                )}
               </div>
 
               {/* When are you planning to finalise */}
               <div className="relative">
-                <div className="flex items-center gap-3 bg-[#050505] border border-white/20 rounded-md px-3 py-2.5 focus-within:border-[#d4af37]">
-                  <Clock className="h-4 w-4 text-[#d4af37] shrink-0" />
+                <div className={`flex items-center gap-3 bg-[#050505] border rounded-md px-3 py-2.5 transition-colors ${
+                  errors.planningToFinalise ? "border-red-500 bg-red-950/20" : "border-white/20 focus-within:border-[#d4af37]"
+                }`}>
+                  <Clock className={`h-4 w-4 shrink-0 ${errors.planningToFinalise ? "text-red-400" : "text-[#d4af37]"}`} />
                   <select
                     id="planningToFinalise"
                     name="planningToFinalise"
                     required
                     value={formData.planningToFinalise}
                     onChange={handleChange}
-                    className="w-full bg-transparent border-none text-sm outline-none font-body text-white cursor-pointer"
+                    className={`w-full bg-transparent border-none text-sm outline-none font-body cursor-pointer ${
+                      formData.planningToFinalise ? "text-white" : "text-gray-400"
+                    }`}
                   >
                     <option value="" disabled className="bg-[#141414] text-gray-500">When are you planning to finalise?*</option>
                     <option value="Immediately (Within 15 days)" className="bg-[#141414] text-white">Immediately (Within 15 days)</option>
@@ -269,7 +309,11 @@ export default function OfferModal({ isOpen, onClose, onAddLead }: OfferModalPro
                     <option value="More than 3 months" className="bg-[#141414] text-white">More than 3 months</option>
                   </select>
                 </div>
-                {errors.planningToFinalise && <p className="text-red-400 text-[10px] mt-1">{errors.planningToFinalise}</p>}
+                {errors.planningToFinalise && (
+                  <p className="text-red-400 text-xs mt-1 font-medium flex items-center gap-1">
+                    <span>⚠️</span> {errors.planningToFinalise}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-start gap-3 pt-1">
