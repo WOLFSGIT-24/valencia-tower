@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Download, CheckCircle, Phone, Mail, User, ShieldCheck, IndianRupee, Calendar, Clock } from "lucide-react";
+import { CheckCircle, Phone, Mail, User, ShieldCheck, IndianRupee, Calendar, Clock } from "lucide-react";
 import { LeadSubmission } from "../types";
 
 interface BrochureFormProps {
@@ -103,20 +103,6 @@ export default function BrochureForm({ onAddLead, preselectedUnit }: BrochureFor
       setLoading(false);
       setFormSubmitted(true);
     }, 1200);
-  };
-
-  const handleDownloadBrochure = () => {
-    try {
-      window.open("/Brochure.pdf", "_blank");
-      const link = document.createElement("a");
-      link.href = "/Brochure.pdf";
-      link.setAttribute("download", "Valencia_Towers_Phase_2_Brochure.pdf");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (e) {
-      console.error("Error downloading brochure", e);
-    }
   };
 
   return (
@@ -395,14 +381,10 @@ export default function BrochureForm({ onAddLead, preselectedUnit }: BrochureFor
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                    <button
-                      onClick={handleDownloadBrochure}
-                      className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#b8860b] via-[#d4af37] to-[#e6c878] text-[#050505] font-body text-xs font-extrabold tracking-widest uppercase px-8 py-4.5 hover:opacity-95 transition-all shadow-lg rounded-sm"
-                    >
-                      <Download className="h-4 w-4" />
-                      DOWNLOAD CATALOG
-                    </button>
+                  <div className="pt-2">
+                    <span className="inline-flex items-center gap-2 text-xs font-body text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/30 px-4 py-2 rounded-full">
+                      ✓ Details registered successfully
+                    </span>
                   </div>
                 </div>
               )}

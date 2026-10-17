@@ -98,7 +98,7 @@ export default function BookingModal({
         notes: `Unlocked Floor Plans | Budget: ${formData.budget} | Site Visit: ${formData.siteVisitDate} | Finalise: ${formData.planningToFinalise}`,
       });
       setLoading(false);
-      setSubmitted(true);
+      onClose();
     }, 1000);
   };
 

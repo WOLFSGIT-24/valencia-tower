@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ShieldAlert, Compass, Sparkles, Building2 } from "lucide-react";
 
-interface IntimateScaleProps {
-  onRequestDownload?: () => void;
-}
-
-export default function IntimateScale({ onRequestDownload }: IntimateScaleProps) {
+export default function IntimateScale() {
   const images = ["/building.png", "/balcony.png", "/building2.jpg", "/building3.jpg", "/building4.jpg"];
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -55,18 +51,6 @@ export default function IntimateScale({ onRequestDownload }: IntimateScaleProps)
             <p className="font-body text-sm md:text-base text-gray-text leading-relaxed pt-2">
               Luxury isn't measured by the number of amenities. It's reflected in planning, privacy and attention to detail. Valencia Towers Phase 2 offers a boutique living experience with exclusive residences, ensuring a quieter, more exclusive community.
             </p>
-
-
-            
-            {/* CTA Button */}
-            <div className="pt-6">
-              {/* <button 
-                onClick={onRequestDownload}
-                className="inline-flex items-center gap-2 bg-transparent border border-navy-primary text-navy-primary font-body text-xs font-bold tracking-widest uppercase px-6 py-3.5 hover:bg-navy-primary hover:text-white transition-colors w-full sm:w-auto justify-center rounded-sm cursor-pointer"
-              >
-                Download Floor Plans
-              </button> */}
-            </div>
           </div>
 
           {/* Graphical Right Panel with Hover Depth Effect (Desktop Only) */}

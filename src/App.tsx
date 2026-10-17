@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 import PrivacyPolicyModal from "./components/PrivacyPolicyModal";
 import TermsModal from "./components/TermsModal";
 import OfferModal from "./components/OfferModal";
-import DownloadModal from "./components/DownloadModal";
+import ThankYouPage from "./components/ThankYouPage";
 import { LeadSubmission } from "./types";
 
 const LOCAL_STORAGE_KEY = "valencia_towers_leads";
@@ -28,8 +28,53 @@ export default function App() {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [termsOpen, setTermsOpen] = useState(false);
   const [offerOpen, setOfferOpen] = useState(false);
-  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-  const [triggerDownload, setTriggerDownload] = useState(false);
+  const [submittedLead, setSubmittedLead] = useState<LeadSubmission | null>(null);
+
+  const [currentRoute, setCurrentRoute] = useState<"home" | "thank-you">(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path.includes("thank-you") || path.includes("thankyou") || hash.includes("thank-you") || hash.includes("thankyou")) {
+        return "thank-you";
+      }
+    }
+    return "home";
+  });
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path.includes("thank-you") || path.includes("thankyou") || hash.includes("thank-you") || hash.includes("thankyou")) {
+        setCurrentRoute("thank-you");
+      } else {
+        setCurrentRoute("home");
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigateToThankYou = (lead?: LeadSubmission) => {
+    if (lead) setSubmittedLead(lead);
+    setCurrentRoute("thank-you");
+    try {
+      window.history.pushState({ page: "thank-you" }, "", "/thank-you");
+    } catch (e) {
+      console.error("History navigation error", e);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const navigateToHome = () => {
+    setCurrentRoute("home");
+    try {
+      window.history.pushState({ page: "home" }, "", "/");
+    } catch (e) {
+      console.error("History navigation error", e);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Read initial cache
   useEffect(() => {
@@ -90,25 +135,12 @@ export default function App() {
     const updated = [newLead, ...leads];
     saveLeadsToCache(updated);
 
-    if (triggerDownload) {
-      try {
-        window.open("/Brochure.pdf", "_blank");
-        const link = document.createElement("a");
-        link.href = "/Brochure.pdf";
-        link.setAttribute("download", "Valencia_Towers_Phase_2_Brochure.pdf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (e) {
-        console.error("Error triggering PDF download", e);
-      }
-      setTriggerDownload(false);
-    }
-  };
+    // Close any open modals
+    setOfferOpen(false);
+    setBookingOpen(false);
 
-  const handleRequestDownload = () => {
-    setTriggerDownload(true);
-    setOfferOpen(true);
+    // Direct user to Thank You page
+    navigateToThankYou(newLead);
   };
 
   const handleUpdateStatus = (id: string, status: LeadSubmission["status"]) => {
@@ -124,6 +156,25 @@ export default function App() {
     setOfferOpen(true);
   };
 
+  if (currentRoute === "thank-you") {
+    return (
+      <>
+        <ThankYouPage
+          lead={submittedLead || (leads.length > 0 ? leads[0] : null)}
+          onBackToHome={navigateToHome}
+        />
+        <AdminDashboard
+          isOpen={adminOpen}
+          onClose={() => setAdminOpen(false)}
+          leads={leads}
+          onUpdateStatus={handleUpdateStatus}
+          onClearLeads={handleClearLeads}
+          onAddMockLeads={() => {}}
+        />
+      </>
+    );
+  }
+
   return (
     <div className="relative min-h-screen bg-[#f4f3ee] text-[#050505] pb-20 md:pb-0 overflow-x-hidden w-full">
       {/* Upper Navigation Header */}
@@ -134,7 +185,7 @@ export default function App() {
       />
 
       {/* Section 1 — Hero Banner */}
-      <Hero onOpenEnquiry={handleHeroEnquiry} onRequestDownload={handleRequestDownload} />
+      <Hero onOpenEnquiry={handleHeroEnquiry} />
 
       {/* Section 2 — Why Valencia Towers? */}
       <WhyValencia onOpenEnquiry={handleHeroEnquiry} />
@@ -164,12 +215,6 @@ export default function App() {
       <BookingModal
         isOpen={bookingOpen}
         onClose={() => setBookingOpen(false)}
-        onAddLead={handleAddLead}
-      />
-
-      <DownloadModal
-        isOpen={downloadModalOpen}
-        onClose={() => setDownloadModalOpen(false)}
         onAddLead={handleAddLead}
       />
 

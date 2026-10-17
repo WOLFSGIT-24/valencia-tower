@@ -3,10 +3,9 @@ import { ArrowRight, MapPin } from "lucide-react";
 
 interface HeroProps {
   onOpenEnquiry: () => void;
-  onRequestDownload?: () => void;
 }
 
-export default function Hero({ onOpenEnquiry, onRequestDownload }: HeroProps) {
+export default function Hero({ onOpenEnquiry }: HeroProps) {
   return (
     <section
       id="overview"
