@@ -26,7 +26,7 @@ const WEBHOOK_URL =
   import.meta.env.VITE_WEBHOOK ||
   import.meta.env.WEBHOOK ||
   (typeof process !== "undefined" && process.env?.WEBHOOK_URL) ||
-  "";
+  "https://hook.us1.make.com/78qse8suki4uxx27wtobelmudg9drwd4";
 
 export default function App() {
   const [leads, setLeads] = useState<LeadSubmission[]>([]);

@@ -5,13 +5,20 @@ import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  const webhookUrl =
+    env.VITE_WEBHOOK_URL ||
+    env.WEBHOOK_URL ||
+    env.VITE_WEBHOOK ||
+    env.WEBHOOK ||
+    'https://hook.us1.make.com/78qse8suki4uxx27wtobelmudg9drwd4';
+
   return {
     plugins: [react(), tailwindcss()],
     envPrefix: ['VITE_', 'WEBHOOK'],
     define: {
-      'process.env.WEBHOOK_URL': JSON.stringify(
-        env.WEBHOOK_URL || env.VITE_WEBHOOK_URL || env.WEBHOOK || env.VITE_WEBHOOK || ''
-      ),
+      'import.meta.env.VITE_WEBHOOK_URL': JSON.stringify(webhookUrl),
+      'import.meta.env.WEBHOOK_URL': JSON.stringify(webhookUrl),
+      'process.env.WEBHOOK_URL': JSON.stringify(webhookUrl),
     },
     resolve: {
       alias: {
