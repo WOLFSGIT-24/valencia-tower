@@ -20,6 +20,13 @@ import ThankYouPage from "./components/ThankYouPage";
 import { LeadSubmission } from "./types";
 
 const LOCAL_STORAGE_KEY = "valencia_towers_leads";
+const WEBHOOK_URL =
+  import.meta.env.VITE_WEBHOOK_URL ||
+  import.meta.env.WEBHOOK_URL ||
+  import.meta.env.VITE_WEBHOOK ||
+  import.meta.env.WEBHOOK ||
+  (typeof process !== "undefined" && process.env?.WEBHOOK_URL) ||
+  "";
 
 export default function App() {
   const [leads, setLeads] = useState<LeadSubmission[]>([]);
@@ -99,7 +106,6 @@ export default function App() {
 
   const handleAddLead = (rawLead: Omit<LeadSubmission, "id" | "submittedAt" | "status">) => {
     const isoTimestamp = new Date().toISOString();
-    const localTimestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
     
     const newLead: LeadSubmission = {
       ...rawLead,
@@ -108,29 +114,28 @@ export default function App() {
       status: "Pending",
     };
 
-    // Post to Webhook if needed
-    fetch("https://hook.us1.make.com/2bmmq21zo8ocu9itedtq5oyhu5sg5zad", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: newLead.id,
-        fullName: newLead.fullName,
-        email: newLead.email,
-        phone: newLead.phone,
-        budget: newLead.budget || "",
-        siteVisitDate: newLead.siteVisitDate || newLead.preferredDate || "",
-        planningToFinalise: newLead.planningToFinalise || "",
-        source: newLead.source,
-        notes: newLead.notes || "",
-        submittedAt: isoTimestamp,
-        localTimestamp: localTimestamp,
-        status: newLead.status,
-      }),
-    }).catch((err) => {
-      console.error("Webhook submission failed:", err);
-    });
+    // Post to Webhook with only form fields and timestamp (no extra fields)
+    if (WEBHOOK_URL) {
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: rawLead.fullName,
+          email: rawLead.email,
+          phone: rawLead.phone,
+          budget: rawLead.budget || "",
+          siteVisitDate: rawLead.siteVisitDate || rawLead.preferredDate || "",
+          planningToFinalise: rawLead.planningToFinalise || "",
+          timestamp: isoTimestamp,
+        }),
+      }).catch((err) => {
+        console.error("Webhook submission failed:", err);
+      });
+    } else {
+      console.warn("Webhook URL not configured. Please add VITE_WEBHOOK_URL or WEBHOOK_URL to your .env file.");
+    }
 
     const updated = [newLead, ...leads];
     saveLeadsToCache(updated);
